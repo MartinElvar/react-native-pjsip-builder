@@ -32,6 +32,10 @@ export ANDROID_NDK_ROOT=/sources/android_ndk
 make dep
 make
 
+cd /sources/pjsip/third_party/ZRTP4PJ/build/zsrtp
+make -f updatedMakefile dep
+make -f updatedMakefile
+
 cd /tmp/pjsip/pjsip-apps/src/swig
 make
 
