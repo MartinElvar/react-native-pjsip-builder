@@ -118,7 +118,7 @@ RUN cd /sources/openh264 && \
     mv openh264-*/* ./
 
 ADD ./build_zsrtp.sh /usr/local/sbin/
-RUN ./build_zsrtp.sh
+RUN build_zsrtp.sh
 
 ##############################
 # Build swig, openssl, opus, openh264
