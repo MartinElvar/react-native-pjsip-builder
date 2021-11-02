@@ -26,7 +26,7 @@ ENV ANDROID_SETUP_APIS "23 25"
 ENV ANDROID_BUILD_TOOLS_VERSION 25
 ENV ANDROID_TARGET_API 23
 
-ENV PJSIP_DOWNLOAD_URL "http://www.pjsip.org/release/2.7.1/pjproject-2.7.1.tar.bz2"
+ENV PJSIP_DOWNLOAD_URL "https://github.com/pjsip/pjproject/archive/refs/tags/2.7.2.tar.gz"
 
 ENV SWIG_DOWNLOAD_URL "http://prdownloads.sourceforge.net/swig/swig-3.0.7.tar.gz"
 
@@ -50,7 +50,9 @@ RUN mkdir -p /sources/android_ndk && \
     mkdir -p /sources/swig && \
     mkdir -p /sources/openssl && \
     mkdir -p /sources/opus && \
-    mkdir -p /sources/openh264
+    mkdir -p /sources/openh264 \
+    mkdir -p /sources/zsrtp
+
 
 # Download Android NDK
 RUN cd /sources/android_ndk && \
@@ -79,9 +81,9 @@ RUN cd /sources/android_sdk/tools && \
 
 # Download Pjsip
 RUN cd /sources/pjsip && \
-    curl -L -# -o pjsip.tar.bz2 "$PJSIP_DOWNLOAD_URL" && \
-    tar xjf pjsip.tar.bz2 && \
-    rm -rf pjsip.tar.bz2 && \
+    curl -L -# -o pjsip.tar.gz "$PJSIP_DOWNLOAD_URL" && \
+    tar xzf pjsip.tar.gz && \
+    rm -rf pjsip.tar.gz && \
     mv pjproject-*/* ./
 
 # Download Swig
@@ -114,6 +116,9 @@ RUN cd /sources/openh264 && \
     tar xzf openh264.tar.gz && \
     rm -rf openh264.tar.gz && \
     mv openh264-*/* ./
+
+ADD ./build_zsrtp.sh /usr/local/sbin/
+RUN ./build_zsrtp.sh
 
 ##############################
 # Build swig, openssl, opus, openh264
